@@ -1,0 +1,11 @@
+
+FSSD-12/
+data_list/
+
+*.pyc
+.idea/
+result2/
+result1/
+result0/
+exp/
+*.pth
