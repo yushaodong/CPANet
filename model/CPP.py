@@ -79,3 +79,4 @@ if __name__ == '__main__':
     print(out1.size())
     total = sum(p.numel() for p in net.parameters())
     print("Total params: %.4fM" % (total / 1e6))
+    print(net)

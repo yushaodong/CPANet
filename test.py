@@ -187,8 +187,22 @@ def validate(val_loader, model, criterion):
             start_time = time.time()
             # output, pred, hot = model(s_x=s_input, s_y=s_mask, x=input, y=target)
             output, pred = model(s_x=s_input, s_y=s_mask, x=input, y=target)
+            
             save_path = r'./result/{}.png'.format(i+1)
-            cv2.imwrite(save_path, pred)
+            input_array = input.cpu().squeeze().permute(1, 2, 0).numpy()
+            input_image = ((input_array + 1) * 127.5 ).astype('uint8') 
+            # cv2.imwrite("C:/1.bmp",input_image)
+            array = target.cpu().squeeze().numpy() 
+            image = (array*255).astype('uint8')
+            # cv2.imwrite("C:/2.bmp",image)
+            # cv2.imwrite("C:/3.png",pred)            
+            h, w, _ = input_image.shape
+            result=np.zeros((h,w*3,3),dtype=np.uint8)
+            result[:, 0:w] = input_image
+            result[:, w:2*w] = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
+            result[:, 2*w:3*w] = cv2.cvtColor(pred.astype(np.uint8), cv2.COLOR_GRAY2BGR)
+            cv2.imwrite(save_path,result)
+
             total_time = total_time + 1
             model_time.update(time.time() - start_time)
 

@@ -7,5 +7,7 @@ data_list/
 result2/
 result1/
 result0/
+result/
 exp/
 *.pth
+__pycache__/

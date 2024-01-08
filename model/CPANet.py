@@ -204,7 +204,7 @@ class cpanet(nn.Module):
         supp_i = torch.zeros_like(supp_a_list[0])   # 【1，256，1，1】
         for i in range(self.shot):                  # 把k shots的proxy列表元素叠加
             supp_i += supp_a_list[i]
-        supp_ap = supp_i/len(supp_i)                # 求均值
+        supp_ap = supp_i/len(supp_a_list)                # 求均值
         supp_ap = supp_ap.expand(query_feat.shape[0], 256, query_feat.shape[-2], query_feat.shape[-1]) #proxy列展开为面
 
         query_supp = torch.cat([supp_ap, query_feat], dim=1)    #面合并FQ
