@@ -7,14 +7,14 @@ DATA:
   classes: 2
 
 TRAIN:
-  save_path: exp/SSD/fold0_resnet50/model_1shot/   # save_path: exp/SSD/fold0_resnet50/model_5shot
+  save_path: exp/SSD/fold1_resnet50/model_1shot/   # save_path: exp/SSD/fold0_resnet50/model_5shot
   shot: 1         #1 5
   train: True
   evaluate: True  #
   # evaluate: False  #
 
-  # layers: 50      #backbone
-  layers: convtiny      #backbone
+  layers: 50      #backbone
+  # layers: convtiny      #backbone
 
   train_h: 200
   train_w: 200

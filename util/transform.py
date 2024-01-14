@@ -223,7 +223,7 @@ class Crop(object):
         int instead of sequence like (h, w), a square crop (size, size) is made.
     """
 
-    def __init__(self, size, crop_type='center', padding=None, ignore_label=255):
+    def __init__(self, size, crop_type='center', padding=None, padding_label=255):
         self.size = size
         if isinstance(size, int):
             self.crop_h = size
@@ -250,10 +250,10 @@ class Crop(object):
                 raise (RuntimeError("padding channel is not equal with 3\n"))
         else:
             raise (RuntimeError("padding in Crop() should be a number list\n"))
-        if isinstance(ignore_label, int):
-            self.ignore_label = ignore_label
+        if isinstance(padding_label, int):
+            self.padding_label = padding_label
         else:
-            raise (RuntimeError("ignore_label should be an integer number\n"))
+            raise (RuntimeError("padding_label should be an integer number\n"))
 
     def __call__(self, image, label):
         h, w = label.shape
@@ -268,7 +268,7 @@ class Crop(object):
             image = cv2.copyMakeBorder(image, pad_h_half, pad_h - pad_h_half, pad_w_half, pad_w - pad_w_half,
                                        cv2.BORDER_CONSTANT, value=self.padding)
             label = cv2.copyMakeBorder(label, pad_h_half, pad_h - pad_h_half, pad_w_half, pad_w - pad_w_half,
-                                       cv2.BORDER_CONSTANT, value=self.ignore_label)
+                                       cv2.BORDER_CONSTANT, value=self.padding_label)
         h, w = label.shape
         raw_label = label
         raw_image = image
@@ -311,7 +311,7 @@ class Crop(object):
 
 class RandRotate(object):
     # Randomly rotate image & label with rotate factor in [rotate_min, rotate_max]
-    def __init__(self, rotate, padding, ignore_label=255, p=0.5):
+    def __init__(self, rotate, padding, padding_label=255, p=0.5):
         assert (isinstance(rotate, collections.Iterable) and len(rotate) == 2)
         if isinstance(rotate[0], numbers.Number) and isinstance(rotate[1], numbers.Number) and rotate[0] < rotate[1]:
             self.rotate = rotate
@@ -323,8 +323,8 @@ class RandRotate(object):
             self.padding = padding
         else:
             raise (RuntimeError("padding in RandRotate() should be a number list\n"))
-        assert isinstance(ignore_label, int)
-        self.ignore_label = ignore_label
+        assert isinstance(padding_label, int)
+        self.padding_label = padding_label
         self.p = p
 
     def __call__(self, image, label):
@@ -335,7 +335,7 @@ class RandRotate(object):
             image = cv2.warpAffine(image, matrix, (w, h), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT,
                                    borderValue=self.padding)
             label = cv2.warpAffine(label, matrix, (w, h), flags=cv2.INTER_NEAREST, borderMode=cv2.BORDER_CONSTANT,
-                                   borderValue=self.ignore_label)
+                                   borderValue=self.padding_label)
         return image, label
 
 

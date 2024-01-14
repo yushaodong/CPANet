@@ -47,9 +47,9 @@ def model_instance(args,logger,device):
             {'params': model.conv_3x3.parameters()},
             {'params': model.DP.parameters()},
             {'params': model.conv_3T1.parameters()},
-            {'params': model.ybn1.parameters()},
-            {'params': model.ybn2.parameters()},
-            {'params': model.ybn3.parameters()},
+            # {'params': model.ybn1.parameters()},
+            # {'params': model.ybn2.parameters()},
+            # {'params': model.ybn3.parameters()},
         ],
         lr=args.base_lr, weight_decay=args.weight_decay)
         # lr=args.base_lr, momentum=args.momentum, weight_decay=args.weight_decay)
