@@ -1,0 +1,1 @@
+from model.model_inst import model_instance

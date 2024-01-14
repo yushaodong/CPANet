@@ -5,6 +5,7 @@ import yaml
 import os
 from ast import literal_eval
 import copy
+import logging
 # import logger
 
 
@@ -143,7 +144,7 @@ def _check_and_coerce_cfg_value_type(replacement, original, key, full_key):
     casts = [(tuple, list), (list, tuple)]
     # For py2: allow converting from str (bytes) to a unicode string
     try:
-        casts.append((str, unicode))  # noqa: F821
+        casts.append((str, ))  # noqa: F821
     except Exception:
         pass
 
@@ -159,8 +160,13 @@ def _check_and_coerce_cfg_value_type(replacement, original, key, full_key):
         )
     )
 
+    
+def get_logger():
+    logger = logging.getLogger("main-logger")
+    logger.setLevel(logging.INFO)
+    handler = logging.StreamHandler()
+    fmt = "[%(asctime)s %(levelname)s %(filename)s line %(lineno)d %(process)d] %(message)s"
+    handler.setFormatter(logging.Formatter(fmt))
+    logger.addHandler(handler)
 
-# def _assert_with_logging(cond, msg):
-#     if not cond:
-#         logger.debug(msg)
-#     assert cond, msg
+    return logger

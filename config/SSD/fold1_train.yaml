@@ -1,0 +1,59 @@
+DATA:
+  data_root: 'C:/dataset/FSSD-12/'
+  train_list: './data_list/train/fold1_defect.txt'
+  val_list: './data_list/val/fold1_defect.txt'
+  split: 1      #0 1 2
+
+  classes: 2
+
+TRAIN:
+  save_path: exp/SSD/fold0_resnet50/model_1shot/   # save_path: exp/SSD/fold0_resnet50/model_5shot
+  shot: 1         #1 5
+  train: True
+  evaluate: True  #
+  # evaluate: False  #
+
+  # layers: 50      #backbone
+  layers: convtiny      #backbone
+
+  train_h: 200
+  train_w: 200
+  val_size: 200
+  scale_min: 0.9    # minimum random scale
+  scale_max: 1.1    # maximum random scale
+  rotate_min: -10   # minimum random rotate
+  rotate_max: 10    # maximum random rotate
+
+  ignore_label: 255
+  padding_label: 255
+
+  workers: 4        # data loader workers 2->4
+  batch_size: 4     # batch size for training
+  batch_size_val: 1
+  start_epoch: 0
+  epochs: 201 #201
+
+  base_lr: 0.0001
+  power: 0.9        # 0 means no decay
+  momentum: 0.9
+  weight_decay: 0.0001
+  manual_seed: 1998
+
+  print_freq: 50
+  # save_freq: 5  
+  # zoom_factor: 8
+  # sync_bn: False
+  # train_gpu: [0]
+  # aux_weight: 1.0
+
+  weight:                                         # load weight for fine-tuning or testing
+  resume:  #"E:/ys/CPANet_similar/exp/SSD/fold0_resnet50/model_1shot/final.pth"   # path to latest checkpoint (default: none)
+  vgg: False # use vgg as backbone or not
+
+  # ppm_scales: [60, 30, 15, 8]
+  fix_random_seed_val: True
+  warmup: False       #
+  resized_val: True   #
+  ori_resize: True    # use original label for evaluation
+
+

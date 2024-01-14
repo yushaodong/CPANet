@@ -1,12 +1,15 @@
 DATA:
-  data_root: 'C:/dataset/FSSD-12/'
-  train_list: './data_list/train/fold0_defect.txt'
-  val_list: './data_list/val/fold2_defect.txt'
+  data_root: 'C:/dataset/defect/'
+  val_list: 'C:/dataset/defect/img.txt'
   classes: 2
-
+  train: False
+  evaluate: True
+  save_path: exp/SSD/fold2_resnet50/model_1shot   # model saved path
+  weight: "E:/ys/CPANet_similar/exp/SSD/fold0_resnet50/model_1shot/final.pth"  # load weight for fine-tuning or testing
+  split: 999
 
 TRAIN:
-  layers: 50
+  layers: 'convtiny'
   sync_bn: False
   train_h: 200
   train_w: 200
@@ -30,16 +33,11 @@ TRAIN:
   momentum: 0.9
   weight_decay: 0.0001
   manual_seed: 1998
-  print_freq: 5
-  save_freq: 5
+  print_freq: 10
 #  save_path: exp/SSD/fold0_resnet50/model_5shot   # model saved path
 #  shot: 5
-  save_path: exp/SSD/fold2_resnet50/model_1shot   # model saved path
   shot: 1
-  weight: 'exp/SSD/fold0_resnet50/model_1shot/final.pth'  # load weight for fine-tuning or testing
   resume:                                         # path to latest checkpoint (default: none)
-  evaluate: True
-  split: 2
   vgg: False # use vgg as backbone or not
 #  ppm_scales: [66, 33, 16, 8]
   ppm_scales: [60, 30, 15, 8]
