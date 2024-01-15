@@ -187,7 +187,7 @@ def train(train_loader, model, optimizer, epoch):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Few-Shot Semantic Segmentation')
-    parser.add_argument('--config', type=str, default='config/SSD/fold1_train.yaml', help='config file')
+    parser.add_argument('--config', type=str, default='config/SSD/fold0_train.yaml', help='config file')
     args = parser.parse_args()
     args = config.load_cfg_from_cfg_file(args.config)
     
@@ -195,6 +195,7 @@ if __name__ == '__main__':
     # assert (args.train_h - 1) % 8 == 0 and (args.train_w - 1) % 8 == 0
 
     if args.manual_seed is not None:    #设定随机种子
+        cudnn.benchmark = False
         cudnn.deterministic = True
         torch.cuda.manual_seed(args.manual_seed)
         np.random.seed(args.manual_seed)
