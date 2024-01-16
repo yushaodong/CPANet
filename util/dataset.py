@@ -10,7 +10,7 @@ from torch.utils import data
 from torch.utils.data import Dataset
 
 # 解析txt文件，得到img和gt列表
-def make_dataset(split=0, data_root=None, data_list=None, train_class=None):
+def make_dataset(split=0, data_root=None, data_list=None, data_class=None, mode = "unset"):
     assert split in [0, 1, 2, 999]
 
     if not os.path.isfile(data_list):
@@ -18,9 +18,9 @@ def make_dataset(split=0, data_root=None, data_list=None, train_class=None):
 
     img_gt_class_list = []
     list_read = open(data_list, encoding='UTF-8-sig').readlines()
-    print("\n split{}--train-data-class-{}-successful......".format(split,train_class))
+    print("\n split{}-{}-data-class-{}-successful......".format(split,mode,data_class))
     class_img_gt_dict = {}
-    for sub_c in train_class:
+    for sub_c in data_class:
         class_img_gt_dict[sub_c] = []
 
     for l_idx in tqdm(range(len(list_read))):
@@ -30,7 +30,7 @@ def make_dataset(split=0, data_root=None, data_list=None, train_class=None):
         image_name = os.path.join(data_root, line_split[0])
         temp = line_split[0].replace('Images/', 'GT/')
         gt_name = os.path.join(data_root, temp)
-        gt_name = gt_name.replace('jpg', 'png')
+        gt_name = gt_name.replace('jpg', 'png').replace('bmp','png')
         image_class = line_split[1]
         item = (image_name, gt_name, image_class)
         img_gt_class_list.append(item)
@@ -45,7 +45,7 @@ def make_dataset(split=0, data_root=None, data_list=None, train_class=None):
 class SemData(Dataset):
     def __init__(self, split=0, shot=1, data_root=None, data_list=None, transform=None, mode='train'):
         assert mode in ['train', 'val', 'val']
-        assert split in [0, 1, 2]
+        assert split in [0, 1, 2, 999]
         self.mode = mode
         self.split = split
         self.shot = shot
@@ -62,13 +62,16 @@ class SemData(Dataset):
         elif self.split == 0:
             self.train_class = list(range(5, 13))
             self.val_class = list(range(1, 5))
+        elif self.split == 999:
+            self.train_class = list[1]
+            self.val_class = list([1])
 
         if self.mode == 'train':    #得到img和gt列表
-            self.img_gt_class_list, self.class_img_gt_dict = make_dataset(split, data_root, data_list, self.train_class)
+            self.img_gt_class_list, self.class_img_gt_dict = make_dataset(split, data_root, data_list, self.train_class, mode)
             assert len(self.class_img_gt_dict.keys()) == len(self.train_class)
 
         elif self.mode == 'val':
-            self.img_gt_class_list, self.class_img_gt_dict = make_dataset(split, data_root, data_list, self.val_class)
+            self.img_gt_class_list, self.class_img_gt_dict = make_dataset(split, data_root, data_list, self.val_class, mode)
             assert len(self.class_img_gt_dict.keys()) == len(self.val_class)
 
         self.transform = transform
@@ -85,8 +88,7 @@ class SemData(Dataset):
         query_rgb = np.float32(query_rgb)
 
         query_mask = cv2.imread(query_gt, cv2.IMREAD_GRAYSCALE)
-        query_mask[query_mask != 255] = 0
-        query_mask[query_mask == 255] = 1
+        query_mask = np.where(query_mask < 1, 0, 1)
 
         if query_rgb.shape[0] != query_mask.shape[0] or query_rgb.shape[1] != query_mask.shape[1]:
             raise (RuntimeError("Query Image & label shape mismatch: " + query_img + " " + query_gt + "\n"))
@@ -132,8 +134,8 @@ class SemData(Dataset):
             support_rgb = np.float32(support_rgb)
 
             support_mask = cv2.imread(support_label_path, cv2.IMREAD_GRAYSCALE)
-            support_mask[support_mask != 255] = 0
-            support_mask[support_mask == 255] = 1
+            support_mask = np.where(support_mask < 1, 0, 1)
+
 
             if support_rgb.shape[0] != support_mask.shape[0] or support_rgb.shape[1] != support_mask.shape[1]:
                 raise (RuntimeError(

@@ -21,10 +21,11 @@ from util import config,util
 
 device = torch.device('cuda:0')
 
+ymlpath='config/SSD/test-defect.yaml'
 def get_parser():
     parser = argparse.ArgumentParser(description='PyTorch Semantic Segmentation')
     # parser.add_argument('--config', type=str, default='config/SSD/test-defect.yaml', help='config file')
-    parser.add_argument('--config', type=str, default='config/SSD/test.yaml', help='config file')
+    parser.add_argument('--config', type=str, default=ymlpath, help='config file')
     args = parser.parse_args()
     cfg = config.load_cfg_from_cfg_file(args.config)
     return cfg
@@ -35,9 +36,9 @@ def main_worker(argss):
 
     import time
     current_time = time.localtime()
-    time_string = time.strftime("%Y-%m-%d__%H-%M", current_time)
+    time_string = time.strftime("%Y-%m-%d__%H-%M-%S", current_time)
     resultfolder = os.path.splitext(os.path.basename(args.val_list))[0]
-    resultfolder = resultfolder + "/" + time_string
+    resultfolder = 'exp/result_'+resultfolder + time_string
     util.check_makedirs(resultfolder)
     args.resultfolder = resultfolder
                 

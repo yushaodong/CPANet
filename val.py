@@ -1,26 +1,15 @@
 # >>>>>>>>>>python Lab<<<<<<<<<
-import argparse
-import logging
-import os
 import random
 import time
-# import cv2
 import numpy as np
-from tqdm import tqdm
-import matplotlib.pyplot as plt
 # >>>>>>>>>>pytorch Lab<<<<<<<<<
 import torch
-import torch.backends.cudnn as cudnn
-import torch.nn as nn
 import torch.nn.functional as F
 # import torch.nn.parallel
 import torch.optim
 import torch.utils.data
-from tensorboardX import SummaryWriter
 # >>>>>>>>>>define Lab<<<<<<<<<<
-from model.CPANet import cpanet
-from util.util import AverageMeter, poly_learning_rate, intersectionAndUnionGPU
-from util import config, dataset, transform
+from util.util import AverageMeter, intersectionAndUnionGPU
 
 def validate(val_loader, model, criterion, logger, args):
     logger.info('\n\033[1;36m>>>>>>>>>>>>>>>> Start Evaluation <<<<<<<<<<<<<<<<<<\033[0m]')

@@ -187,7 +187,7 @@ def train(train_loader, model, optimizer, epoch):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Few-Shot Semantic Segmentation')
-    parser.add_argument('--config', type=str, default='config/SSD/fold0_train.yaml', help='config file')
+    parser.add_argument('--config', type=str, default='config/SSD/fold2_train.yaml', help='config file')
     args = parser.parse_args()
     args = config.load_cfg_from_cfg_file(args.config)
     

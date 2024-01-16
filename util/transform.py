@@ -26,9 +26,6 @@ class Compose(object):
         return image, label
 
 
-import time
-
-
 class ToTensor(object):
     # Converts numpy.ndarray (H x W x C) to a torch.FloatTensor of shape (C x H x W).
     def __call__(self, image, label):

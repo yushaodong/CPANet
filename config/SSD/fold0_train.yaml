@@ -3,11 +3,11 @@ DATA:
   train_list: './data_list/train/fold0_defect.txt'
   val_list: './data_list/val/fold0_defect.txt'
   split: 0      #0 1 2
+  save_path: exp/SSD/fold0_resnet50/model_1shot/   # save_path: exp/SSD/fold0_resnet50/model_5shot
 
   classes: 2
 
 TRAIN:
-  save_path: exp/SSD/fold0_resnet50/model_1shot/   # save_path: exp/SSD/fold0_resnet50/model_5shot
   shot: 1         #1 5
   train: True
   evaluate: True  #
